@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title>
+      Exploding chickens
+    </title>
+  </head>
+  <body>
+    <canvas width="200" height="200"></canvas>
+    <script>
+      const c = document.querySelector("canvas")
+      const ctx = c.getContext("2d")
+      
+      const img = new Image()
+      img.onload = () => {
+        ctx.drawImage(img, 0, 0, c.width, c.height)
+      }
+      img.src = "images/chicken.png"
+    </script>
+  </body>
+</html>
