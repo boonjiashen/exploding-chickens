@@ -10,13 +10,40 @@
     <canvas width="200" height="200"></canvas>
     <script>
       const c = document.querySelector("canvas")
+
+      class Point {
+        y;
+        x;
+
+        constructor(x, y) {
+          this.x = x
+          this.y = y
+        }
+      }
+
+      c.width = 640
+      c.height = 480
       const ctx = c.getContext("2d")
       
       const img = new Image()
-      img.onload = () => {
-        ctx.drawImage(img, 0, 0, c.width, c.height)
-      }
       img.src = "images/chicken.png"
+      const init_loc = new Point(0, 0)
+      const w = c.width / 10
+      const h = w
+      var curr_loc = init_loc
+
+      function clearCanvas(context) {
+        context.clearRect(0, 0, context.canvas.width, context.canvas.height)
+      }
+
+      function translateRight() {
+        clearCanvas(ctx)
+        ctx.drawImage(img, curr_loc.x, curr_loc.y, w, h)
+        curr_loc.x += 4
+        requestAnimationFrame(translateRight)
+      }
+
+      img.onload = translateRight
     </script>
   </body>
 </html>
