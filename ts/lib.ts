@@ -6,5 +6,5 @@ class Foo {
   }
 }
 
-const foo = new Foo("I'm in foo")
+const foo = new Foo("I'm in foo v2")
 console.log(foo.a)
