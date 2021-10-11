@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && webpack ./js/lib.js",
     "deploy": "tsc && gh-pages -d ."
   },
   "repository": {
@@ -17,8 +17,13 @@
   },
   "homepage": "https://github.com/boonjiashen/exploding-chickens#readme",
   "devDependencies": {
+    "@types/jquery": "^3.5.6",
+    "browserify": "^17.0.0",
     "gh-pages": "^3.2.3",
+    "jquery": "^3.6.0",
     "tslint": "^6.1.3",
-    "typescript": "^4.4.3"
+    "typescript": "^4.4.3",
+    "webpack": "^5.58.1",
+    "webpack-cli": "^4.9.0"
   }
 }
