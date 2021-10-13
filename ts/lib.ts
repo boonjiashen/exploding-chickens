@@ -15,6 +15,8 @@ function getRectOfCanvas(canvas: any) {
 
 const $c = $("canvas")
 const canvas = $c[0] as HTMLCanvasElement;
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
 const ctx = canvas.getContext("2d")!;
 
 function clearCanvas(context: any) {
@@ -24,20 +26,39 @@ function clearCanvas(context: any) {
 const img = new Image()
 img.src = "images/chicken.png"
 const w = ctx.canvas.width / 5
-const initRect = new Rect(0, 0, w, w)
+const initRect = new Rect(ctx.canvas.width / 2, ctx.canvas.height / 2, w, w)
 const init_vel = new Velocity(8, 0)
 var currRect = initRect
 var curr_vel = init_vel
 var isAnimationEnabled = true;
 
+function chooseAtRandom<T>(l: Array<T>): T {
+  const index = Math.floor(Math.random() * l.length)
+  return l[index]
+}
+
+function generateVelocity(): Velocity {
+  const speed = 8
+  return chooseAtRandom([
+    new Velocity(0, speed),
+    new Velocity(speed, 0),
+    new Velocity(0, -speed),
+    new Velocity(-speed, 0),
+  ])
+}
+
+setInterval(() => {
+  curr_vel = generateVelocity()
+}, 300);
+
 function animate() {
   clearCanvas(ctx)
-  ctx.drawImage(img, currRect.x, currRect.y, currRect.width, currRect.height)
   currRect = currRect.refresh(curr_vel)
-  const isInCanvas = currRect.isInside(getRectOfCanvas(ctx.canvas))
-  if (!isInCanvas) {
-    curr_vel.v_x *= -1
-  }
+  ctx.drawImage(img, currRect.x, currRect.y, currRect.width, currRect.height)
+  // const isInCanvas = currRect.isInside(getRectOfCanvas(ctx.canvas))
+  // if (!isInCanvas) {
+  //   curr_vel.v_x *= -1
+  // }
   if (isAnimationEnabled) {
     requestAnimationFrame(animate)
   }
