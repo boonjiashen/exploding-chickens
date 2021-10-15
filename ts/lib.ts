@@ -1,4 +1,4 @@
-import { assert } from "console";
+// import { assert } from "console";
 import $ from "jquery";
 import { Point } from "./Point";
 import { Rect } from "./Rect";
@@ -21,13 +21,13 @@ function getRectOfCanvas(canvas: any) {
  * @param idx index of the frame to be retrieved
  */
 function getSpriteFrame(sheetDim: Rect, frameDim: Rect, idx: number) {
-  assert(sheetDim.width % frameDim.width == 0)
-  assert(sheetDim.height % frameDim.height == 0)
+  // assert(sheetDim.width % frameDim.width == 0)
+  // assert(sheetDim.height % frameDim.height == 0)
 
   const num_frame_x = sheetDim.width / frameDim.width
   const num_frame_y = sheetDim.height / frameDim.height
 
-  assert(idx < num_frame_x * num_frame_y)
+  // assert(idx < num_frame_x * num_frame_y)
 
   return new Rect(
     (idx % num_frame_x) * frameDim.width,
@@ -56,6 +56,15 @@ var currRect = initRect
 var curr_vel = init_vel
 var isAnimationEnabled = true;
 
+const explosion = new Image()
+explosion.src = "images/blood_sprite_sheet.png"
+const explosionData = {
+  nFrames: 12,
+  frameDim: new Rect(0, 0, 160, 160),
+  sheetDim: new Rect(0, 0, 640, 480),
+}
+var frameIdx = 0
+
 function chooseAtRandom<T>(l: Array<T>): T {
   const index = Math.floor(Math.random() * l.length)
   return l[index]
@@ -77,21 +86,26 @@ setInterval(() => {
 
 function animate() {
   clearCanvas(ctx)
-  currRect = currRect.refresh(curr_vel)
-  ctx.drawImage(chicken, currRect.x, currRect.y, currRect.width, currRect.height)
+  frameIdx = (frameIdx + 1) % explosionData.nFrames
+  const spriteFrame = getSpriteFrame(explosionData.sheetDim, explosionData.frameDim, frameIdx)
+  ctx.drawImage(explosion, spriteFrame.x, spriteFrame.y, spriteFrame.width, spriteFrame.height,
+    0, 0, 300, 300
+  )
+  // currRect = currRect.refresh(curr_vel)
+  // ctx.drawImage(chicken, currRect.x, currRect.y, currRect.width, currRect.height)
   // const isInCanvas = currRect.isInside(getRectOfCanvas(ctx.canvas))
   // if (!isInCanvas) {
   //   curr_vel.v_x *= -1
   // }
-  if (isAnimationEnabled) {
-    requestAnimationFrame(animate)
-  }
-  else {
-    clearCanvas(ctx)
-  }
+  // if (isAnimationEnabled) {
+  requestAnimationFrame(animate)
+  // }
+  // else {
+  //   clearCanvas(ctx)
+  // }
 }
 
-chicken.onload = animate
+explosion.onload = animate
 
 $c.on('click', function($event: any) {
   const canvasRect = this.getBoundingClientRect()
