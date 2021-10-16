@@ -1,1 +1,2 @@
-* Refacgtor github workflows to output only static assets
+* Refactor github workflows to output only static assets
+* Fix not being able to use assert with webpack
